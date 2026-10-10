@@ -57,24 +57,24 @@ export function OverviewPage() {
     try {
       const saved = localStorage.getItem('hatchsmart-egg-turn-log');
       const parsed = saved ? JSON.parse(saved) : null;
-      const today = new Date().toLocaleDateString('en-CA');
+      const today = new Date().toISOString().slice(0, 10);
       return parsed?.date === today ? parsed : { date: today, count: 0, lastAt: null };
     } catch {
-      return { date: new Date().toLocaleDateString('en-CA'), count: 0, lastAt: null };
+      return { date: new Date().toISOString().slice(0, 10), count: 0, lastAt: null };
     }
   });
   useEffect(() => {
     localStorage.setItem('hatchsmart-egg-turn-log', JSON.stringify(turnLog));
   }, [turnLog]);
   const logEggTurn = () => {
-    const today = new Date().toLocaleDateString('en-CA');
+    const today = new Date().toISOString().slice(0, 10);
     setTurnLog(previous => ({
       date: today,
       count: previous.date === today ? previous.count + 1 : 1,
       lastAt: new Date().toISOString(),
     }));
   };
-  const resetTurnLog = () => setTurnLog({ date: new Date().toLocaleDateString('en-CA'), count: 0, lastAt: null });
+  const resetTurnLog = () => setTurnLog({ date: new Date().toISOString().slice(0, 10), count: 0, lastAt: null });
   const activities = [
     { time: '2 min ago', event: 'Temperature reading received', type: 'info' },
     { time: '2 min ago', event: 'Humidity reading received', type: 'info' },
