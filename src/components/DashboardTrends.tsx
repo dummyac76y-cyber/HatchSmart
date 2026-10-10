@@ -85,12 +85,12 @@ export function DashboardTrends() {
         <aside className="grid grid-cols-2 gap-3 border-t border-white/[0.07] bg-black/10 p-4 sm:p-5 xl:grid-cols-1 xl:border-l xl:border-t-0">
           <div className="rounded-2xl border border-white/[0.07] bg-white/[0.025] p-4">
             <p className="text-xs text-slate-400">Latest temperature</p>
-            <p className="mt-2 text-2xl font-semibold tracking-tight text-emerald-200">{chartData.at(-1)?.temperature.toFixed(1) ?? '—'}<span className="ml-1 text-sm font-medium text-slate-400">°C</span></p>
+            <p className="mt-2 text-2xl font-semibold tracking-tight text-emerald-200">{chartData[chartData.length - 1]?.temperature.toFixed(1) ?? '—'}<span className="ml-1 text-sm font-medium text-slate-400">°C</span></p>
             <p className="mt-2 text-[11px] text-slate-500">Target 37.5–38.0°C</p>
           </div>
           <div className="rounded-2xl border border-white/[0.07] bg-white/[0.025] p-4">
             <p className="text-xs text-slate-400">Latest humidity</p>
-            <p className="mt-2 text-2xl font-semibold tracking-tight text-sky-200">{chartData.at(-1)?.humidity.toFixed(0) ?? '—'}<span className="ml-1 text-sm font-medium text-slate-400">%</span></p>
+            <p className="mt-2 text-2xl font-semibold tracking-tight text-sky-200">{chartData[chartData.length - 1]?.humidity.toFixed(0) ?? '—'}<span className="ml-1 text-sm font-medium text-slate-400">%</span></p>
             <p className="mt-2 text-[11px] text-slate-500">Target 50–65%</p>
           </div>
           <div className="col-span-2 rounded-2xl border border-emerald-300/10 bg-emerald-300/[0.04] p-4 xl:col-span-1">
