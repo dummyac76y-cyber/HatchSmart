@@ -38,10 +38,10 @@ export function DashboardLayout({ children, currentPage, onNavigate }: Dashboard
   return (
     <div className="min-h-screen bg-transparent flex">
       {/* Sidebar - Desktop */}
-      <aside className="hidden lg:flex flex-col w-64 bg-[#0a211c]/75 backdrop-blur-2xl border-r border-white/10 min-h-screen">
-        <div className="p-6 border-b border-white/5">
+      <aside className="hidden lg:flex flex-col w-[17rem] shrink-0 bg-gradient-to-b from-[#0a2922]/95 via-[#09221f]/90 to-[#091923]/95 backdrop-blur-2xl border-r border-emerald-200/10 min-h-screen shadow-[18px_0_60px_rgba(0,0,0,.18)]">
+        <div className="p-6 border-b border-white/[.08] bg-gradient-to-br from-emerald-300/[.08] to-transparent">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center">
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-300 via-teal-500 to-cyan-700 flex items-center justify-center shadow-lg shadow-emerald-950/50 ring-1 ring-white/20">
               <Egg className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -50,7 +50,7 @@ export function DashboardLayout({ children, currentPage, onNavigate }: Dashboard
             </div>
           </div>
         </div>
-        <nav className="flex-1 p-4 space-y-1">
+        <div className="px-6 pt-6 pb-2 text-[10px] font-bold uppercase tracking-[.22em] text-emerald-100/40">Incubator workspace</div>\n        <nav className="flex-1 px-3 py-2 space-y-1">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentPage === item.id;
@@ -60,8 +60,8 @@ export function DashboardLayout({ children, currentPage, onNavigate }: Dashboard
                 onClick={() => onNavigate(item.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    ? 'relative bg-gradient-to-r from-emerald-300/15 via-teal-300/[.08] to-transparent text-emerald-100 border border-emerald-200/15 shadow-[inset_3px_0_0_#6ee7b7,0_8px_22px_rgba(0,0,0,.12)]'
+                    : 'text-slate-400 border border-transparent hover:text-white hover:bg-white/[.055] hover:border-white/[.06]'
                 }`}
               >
                 <Icon className="w-5 h-5" />
@@ -70,7 +70,7 @@ export function DashboardLayout({ children, currentPage, onNavigate }: Dashboard
             );
           })}
         </nav>
-        <div className="p-4 border-t border-white/5">
+        <div className="mx-3 mb-3 rounded-2xl border border-emerald-200/10 bg-gradient-to-br from-emerald-300/[.09] to-cyan-400/[.025] p-3">\n          <div className="flex items-center gap-2 text-xs font-semibold text-emerald-100"><span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_12px_rgba(110,231,183,.85)]" /> Monitoring workspace</div>\n          <p className="mt-1.5 pl-4 text-[10px] leading-relaxed text-slate-500">Sensor trends, hatch conditions and research logs</p>\n        </div>\n        <div className="p-3 border-t border-white/[.08]">
           <button
             onClick={logout}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-400 hover:text-red-400 hover:bg-red-500/5 transition-all duration-200"
@@ -97,9 +97,9 @@ export function DashboardLayout({ children, currentPage, onNavigate }: Dashboard
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: 'spring', damping: 25 }}
-              className="fixed left-0 top-0 bottom-0 w-72 bg-[#0a211c]/75 backdrop-blur-2xl border-r border-white/10 z-50 lg:hidden flex flex-col"
+              className="fixed left-0 top-0 bottom-0 w-[min(88vw,21rem)] bg-gradient-to-b from-[#0b2c24]/[.98] via-[#091f1e]/[.98] to-[#081923]/[.98] backdrop-blur-2xl border-r border-emerald-200/15 shadow-[24px_0_80px_rgba(0,0,0,.42)] z-50 lg:hidden flex flex-col"
             >
-              <div className="p-6 border-b border-white/5 flex items-center justify-between">
+              <div className="p-5 pt-[max(1.25rem,env(safe-area-inset-top))] border-b border-white/[.08] bg-gradient-to-br from-emerald-300/[.09] to-transparent flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center">
                     <Egg className="w-5 h-5 text-white" />
@@ -152,7 +152,7 @@ export function DashboardLayout({ children, currentPage, onNavigate }: Dashboard
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="lg:hidden text-gray-400 hover:text-white transition-colors"
+                className="lg:hidden rounded-xl border border-white/10 bg-white/[.04] p-2.5 text-gray-300 shadow-lg shadow-black/10 hover:border-emerald-200/20 hover:bg-emerald-300/10 hover:text-white transition-colors"
               >
                 <Menu className="w-6 h-6" />
               </button>
@@ -226,7 +226,7 @@ export function DashboardLayout({ children, currentPage, onNavigate }: Dashboard
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-4 lg:p-8">
+        <main className="flex-1 min-w-0 overflow-y-auto px-3 py-4 sm:px-5 lg:p-8">
           <motion.div
             key={currentPage}
             initial={{ opacity: 0, y: 10 }}
