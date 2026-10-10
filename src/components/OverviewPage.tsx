@@ -1,98 +1,51 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Thermometer, Droplets, Calendar, Wifi, WifiOff, AlertTriangle, Activity, TrendingUp } from 'lucide-react';
+import { Thermometer, Droplets, Calendar, Wifi, WifiOff, AlertTriangle, TrendingUp, Activity, Egg } from 'lucide-react';
 import { useSensorData } from '../hooks/useSensorData';
+import { DashboardTrends } from './DashboardTrends';
 
 function StatusBadge({ status }: { status: 'normal' | 'warning' | 'critical' }) {
-  const colors = {
-    normal: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-    warning: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-    critical: 'bg-red-500/10 text-red-400 border-red-500/20',
+  const styles = {
+    normal: 'border-emerald-300/15 bg-emerald-300/10 text-emerald-200',
+    warning: 'border-amber-300/15 bg-amber-300/10 text-amber-200',
+    critical: 'border-rose-300/15 bg-rose-300/10 text-rose-200',
   };
-  return (
-    <span className={`px-2.5 py-1 rounded-full text-xs font-medium border ${colors[status]}`}>
-      {status.charAt(0).toUpperCase() + status.slice(1)}
-    </span>
-  );
+  return <span className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold capitalize ${styles[status]}`}>{status}</span>;
 }
 
-function MetricCard({
-  title,
-  value,
-  unit,
-  icon: Icon,
-  status,
-  range,
-  trend,
-  delay,
-}: {
-  title: string;
-  value: string;
-  unit: string;
-  icon: any;
-  status: 'normal' | 'warning' | 'critical';
-  range: string;
-  trend?: string;
-  delay: number;
+function MetricCard({ title, value, unit, icon: Icon, status, detail, trend, delay = 0 }: {
+  title: string; value: string; unit: string; icon: any; status: 'normal' | 'warning' | 'critical'; detail: string; trend?: string; delay?: number;
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.4 }}
-      className="bg-[#1a3530] border border-white/5 rounded-2xl p-6 hover:border-white/10 transition-all duration-300"
-    >
-      <div className="flex items-start justify-between mb-4">
-        <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
-          <Icon className="w-5 h-5 text-emerald-400" />
-        </div>
+    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay, duration: 0.35 }}
+      className="group rounded-3xl border border-white/[0.08] bg-gradient-to-br from-[#193a31] to-[#112a23] p-5 shadow-[0_12px_35px_rgba(0,0,0,0.12)] transition-all hover:-translate-y-0.5 hover:border-emerald-200/20 sm:p-6">
+      <div className="mb-5 flex items-start justify-between gap-3">
+        <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/[0.06] bg-white/[0.04] text-emerald-200"><Icon size={20} /></div>
         <StatusBadge status={status} />
       </div>
-      <div className="mb-2">
-        <span className="text-3xl font-bold text-white">{value}</span>
-        <span className="text-lg text-gray-400 ml-1">{unit}</span>
-      </div>
-      <p className="text-sm text-gray-400 mb-1">{title}</p>
-      <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/5">
-        <span className="text-xs text-gray-500">Target: {range}</span>
-        {trend && (
-          <span className="text-xs text-emerald-400 flex items-center gap-1">
-            <TrendingUp className="w-3 h-3" />
-            {trend}
-          </span>
-        )}
+      <p className="text-sm text-slate-400">{title}</p>
+      <div className="mt-1 flex items-baseline gap-1.5"><span className="text-3xl font-semibold tracking-tight text-white sm:text-[2.1rem]">{value}</span><span className="text-sm font-medium text-slate-400">{unit}</span></div>
+      <div className="mt-5 flex items-center justify-between border-t border-white/[0.07] pt-4">
+        <span className="text-xs text-slate-500">{detail}</span>
+        {trend && <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-200"><TrendingUp size={13} />{trend}</span>}
       </div>
     </motion.div>
   );
 }
 
-function DeviceStatusCard({ isOnline, lastUpdate, sensorStatus }: { isOnline: boolean; lastUpdate: string; sensorStatus: string }) {
+function DeviceStatusCard({ isOnline, lastUpdate }: { isOnline: boolean; lastUpdate: string }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.4, duration: 0.4 }}
-      className="bg-[#1a3530] border border-white/5 rounded-2xl p-6 hover:border-white/10 transition-all duration-300"
-    >
-      <div className="flex items-start justify-between mb-4">
-        <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
-          {isOnline ? <Wifi className="w-5 h-5 text-emerald-400" /> : <WifiOff className="w-5 h-5 text-red-400" />}
-        </div>
+    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.35 }}
+      className="rounded-3xl border border-white/[0.08] bg-gradient-to-br from-[#193a31] to-[#112a23] p-5 shadow-[0_12px_35px_rgba(0,0,0,0.12)] sm:p-6">
+      <div className="mb-5 flex items-start justify-between gap-3">
+        <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/[0.06] bg-white/[0.04] text-emerald-200">{isOnline ? <Wifi size={20} /> : <WifiOff size={20} />}</div>
         <StatusBadge status={isOnline ? 'normal' : 'critical'} />
       </div>
-      <div className="mb-2">
-        <span className="text-2xl font-bold text-white">{isOnline ? 'Online' : 'Offline'}</span>
-      </div>
-      <p className="text-sm text-gray-400 mb-4">Device Status</p>
-      <div className="space-y-3 pt-4 border-t border-white/5">
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-gray-500">Last Update</span>
-          <span className="text-xs text-gray-300">{lastUpdate}</span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-gray-500">Sensors</span>
-          <span className="text-xs text-emerald-400">{sensorStatus}</span>
-        </div>
+      <p className="text-sm text-slate-400">Device status</p>
+      <div className="mt-1 flex items-center gap-2"><span className={`h-2.5 w-2.5 rounded-full ${isOnline ? 'bg-emerald-300 shadow-[0_0_12px_rgba(110,231,183,.6)]' : 'bg-rose-400'}`} /><span className="text-2xl font-semibold tracking-tight text-white">{isOnline ? 'Online' : 'Offline'}</span></div>
+      <div className="mt-5 space-y-3 border-t border-white/[0.07] pt-4">
+        <div className="flex items-center justify-between text-xs"><span className="text-slate-500">Last update</span><span className="text-slate-300">{lastUpdate}</span></div>
+        <div className="flex items-center justify-between text-xs"><span className="text-slate-500">Sensors</span><span className="text-emerald-200">2 connected</span></div>
       </div>
     </motion.div>
   );
@@ -100,113 +53,54 @@ function DeviceStatusCard({ isOnline, lastUpdate, sensorStatus }: { isOnline: bo
 
 export function OverviewPage() {
   const { currentData, incubationProgress, isOnline, lastUpdate, isDemo } = useSensorData();
+  const activities = [
+    { time: '2 min ago', event: 'Temperature reading received', type: 'info' },
+    { time: '2 min ago', event: 'Humidity reading received', type: 'info' },
+    { time: '15 min ago', event: 'Sensor data received from ESP32', type: 'success' },
+    { time: '1 hour ago', event: 'System health check passed', type: 'success' },
+    { time: '3 hours ago', event: 'Temperature briefly exceeded threshold', type: 'warning' },
+  ];
 
   return (
-    <div className="space-y-6">
-      {/* Demo Banner */}
-      {isDemo && (
-        <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-3">
-          <AlertTriangle className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
-          <div>
-            <p className="text-sm font-medium text-amber-200">Demonstration Mode Active</p>
-            <p className="text-xs text-amber-300/70 mt-1">
-              Data shown is simulated for development purposes. Connect Firebase and IoT hardware to see real measurements.
-            </p>
-          </div>
+    <div className="space-y-6 sm:space-y-7">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-200/10 bg-emerald-200/[0.05] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-200"><Activity size={13} /> Incubator overview</div>
+          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Good to see you.</h1>
+          <p className="mt-1.5 text-sm text-slate-400">Here’s your incubator’s environmental health at a glance.</p>
         </div>
-      )}
-
-      {/* Metrics Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6">
-        <MetricCard
-          title="Temperature"
-          value={currentData.temperature.toFixed(1)}
-          unit="°C"
-          icon={Thermometer}
-          status={currentData.tempStatus}
-          range="37.5 – 38.0°C"
-          trend="Stable"
-          delay={0}
-        />
-        <MetricCard
-          title="Relative Humidity"
-          value={currentData.humidity.toFixed(0)}
-          unit="%"
-          icon={Droplets}
-          status={currentData.humidityStatus}
-          range="50 – 65%"
-          trend="Stable"
-          delay={0.1}
-        />
-        <MetricCard
-          title="Incubation Day"
-          value={`${incubationProgress.currentDay}`}
-          unit={`/ ${incubationProgress.totalDays}`}
-          icon={Calendar}
-          status="normal"
-          range={`Day ${incubationProgress.currentDay} of ${incubationProgress.totalDays}`}
-          delay={0.2}
-        />
-        <DeviceStatusCard
-          isOnline={isOnline}
-          lastUpdate={lastUpdate}
-          sensorStatus="2 sensors connected"
-        />
+        <div className="flex items-center gap-2 text-xs text-slate-400"><span className="h-2 w-2 animate-pulse rounded-full bg-emerald-300" /> Live demo feed <span className="text-slate-600">•</span> Updates every 5 sec</div>
       </div>
 
-      {/* Incubation Progress */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.4 }}
-        className="bg-[#1a3530] border border-white/5 rounded-2xl p-6"
-      >
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">Incubation Progress</h3>
-          <span className="text-sm text-gray-400">{incubationProgress.species}</span>
-        </div>
-        <div className="relative w-full h-3 bg-white/5 rounded-full overflow-hidden mb-3">
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${incubationProgress.percentage}%` }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="absolute inset-y-0 left-0 bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full"
-          />
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-400">Started: {incubationProgress.startDate}</span>
-          <span className="text-sm text-emerald-400 font-medium">{incubationProgress.percentage.toFixed(0)}% Complete</span>
-          <span className="text-sm text-gray-400">Est. Hatch: {incubationProgress.estimatedHatch}</span>
-        </div>
-      </motion.div>
+      {isDemo && <div className="flex items-start gap-3 rounded-2xl border border-amber-200/10 bg-amber-300/[0.06] p-4">
+        <AlertTriangle size={18} className="mt-0.5 shrink-0 text-amber-200" />
+        <div><p className="text-sm font-semibold text-amber-100">Demonstration mode is active</p><p className="mt-1 text-xs leading-relaxed text-amber-100/65">These readings are simulated for preview purposes. Connect Firebase and your IoT hardware before using this dashboard for real incubation decisions.</p></div>
+      </div>}
 
-      {/* Recent Activity */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6, duration: 0.4 }}
-        className="bg-[#1a3530] border border-white/5 rounded-2xl p-6"
-      >
-        <h3 className="text-lg font-semibold text-white mb-4">Recent Activity</h3>
-        <div className="space-y-3">
-          {[
-            { time: '2 min ago', event: 'Temperature reading: 37.7°C', type: 'info' },
-            { time: '2 min ago', event: 'Humidity reading: 58%', type: 'info' },
-            { time: '15 min ago', event: 'Sensor data received from ESP32', type: 'success' },
-            { time: '1 hour ago', event: 'System health check passed', type: 'success' },
-            { time: '3 hours ago', event: 'Temperature briefly exceeded threshold', type: 'warning' },
-          ].map((item, i) => (
-            <div key={i} className="flex items-center gap-3 py-2 border-b border-white/5 last:border-0">
-              <div className={`w-2 h-2 rounded-full ${
-                item.type === 'success' ? 'bg-emerald-400' :
-                item.type === 'warning' ? 'bg-amber-400' : 'bg-blue-400'
-              }`} />
-              <span className="text-sm text-gray-300 flex-1">{item.event}</span>
-              <span className="text-xs text-gray-500">{item.time}</span>
-            </div>
-          ))}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
+        <MetricCard title="Temperature" value={currentData.temperature.toFixed(1)} unit="°C" icon={Thermometer} status={currentData.tempStatus} detail="Target: 37.5–38.0°C" trend="Stable" />
+        <MetricCard title="Relative humidity" value={currentData.humidity.toFixed(0)} unit="%" icon={Droplets} status={currentData.humidityStatus} detail="Target: 50–65%" delay={0.08} />
+        <MetricCard title="Incubation day" value={String(incubationProgress.currentDay)} unit={`/ ${incubationProgress.totalDays} days`} icon={Calendar} status="normal" detail={`${incubationProgress.percentage.toFixed(0)}% completed`} delay={0.16} />
+        <DeviceStatusCard isOnline={isOnline} lastUpdate={lastUpdate} />
+      </div>
+
+      <DashboardTrends />
+
+      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.2 }}
+        className="rounded-3xl border border-white/[0.08] bg-gradient-to-br from-[#193a31] to-[#112a23] p-5 sm:p-7">
+        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3"><div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-300/10 text-emerald-200"><Egg size={19} /></div><div><h3 className="font-semibold text-white">Incubation timeline</h3><p className="mt-1 text-xs text-slate-400">{incubationProgress.species}</p></div></div>
+          <span className="w-fit rounded-full border border-emerald-200/10 bg-emerald-200/[0.05] px-3 py-1.5 text-xs font-medium text-emerald-100">{incubationProgress.currentDay} of {incubationProgress.totalDays} days</span>
         </div>
-      </motion.div>
+        <div className="mb-4 h-2.5 overflow-hidden rounded-full bg-black/20"><motion.div initial={{ width: 0 }} animate={{ width: `${incubationProgress.percentage}%` }} transition={{ duration: 0.8 }} className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-300" /></div>
+        <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-3"><div><p className="text-slate-500">Start date</p><p className="mt-1 font-medium text-slate-200">{incubationProgress.startDate}</p></div><div className="sm:text-center"><p className="text-slate-500">Progress</p><p className="mt-1 font-medium text-emerald-200">{incubationProgress.percentage.toFixed(0)}% complete</p></div><div className="sm:text-right"><p className="text-slate-500">Estimated hatch</p><p className="mt-1 font-medium text-slate-200">{incubationProgress.estimatedHatch}</p></div></div>
+      </motion.section>
+
+      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.25 }}
+        className="rounded-3xl border border-white/[0.08] bg-[#15342b]/80 p-5 sm:p-7">
+        <div className="mb-4 flex items-center justify-between"><div><h3 className="font-semibold text-white">Recent activity</h3><p className="mt-1 text-xs text-slate-400">Latest device and environment events</p></div><span className="rounded-full border border-white/[0.08] bg-white/[0.03] px-2.5 py-1 text-[11px] text-slate-400">Last 3 hours</span></div>
+        <div className="divide-y divide-white/[0.06]">{activities.map((item) => <div key={item.event} className="flex items-center gap-3 py-3.5"><span className={`h-2 w-2 shrink-0 rounded-full ${item.type === 'success' ? 'bg-emerald-300' : item.type === 'warning' ? 'bg-amber-300' : 'bg-sky-300'}`} /><span className="min-w-0 flex-1 text-sm text-slate-300">{item.event}</span><span className="shrink-0 text-xs text-slate-500">{item.time}</span></div>)}</div>
+      </motion.section>
     </div>
   );
 }
