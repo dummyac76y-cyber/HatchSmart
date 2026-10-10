@@ -36,9 +36,9 @@ export function DashboardLayout({ children, currentPage, onNavigate }: Dashboard
   const userEmail = user?.email || '';
 
   return (
-    <div className="min-h-screen bg-[#0a1f1a] flex">
+    <div className="min-h-screen bg-transparent flex">
       {/* Sidebar - Desktop */}
-      <aside className="hidden lg:flex flex-col w-64 bg-[#0d2520] border-r border-white/5 min-h-screen">
+      <aside className="hidden lg:flex flex-col w-64 bg-[#0a211c]/75 backdrop-blur-2xl border-r border-white/10 min-h-screen">
         <div className="p-6 border-b border-white/5">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center">
@@ -97,7 +97,7 @@ export function DashboardLayout({ children, currentPage, onNavigate }: Dashboard
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: 'spring', damping: 25 }}
-              className="fixed left-0 top-0 bottom-0 w-72 bg-[#0d2520] border-r border-white/5 z-50 lg:hidden flex flex-col"
+              className="fixed left-0 top-0 bottom-0 w-72 bg-[#0a211c]/75 backdrop-blur-2xl border-r border-white/10 z-50 lg:hidden flex flex-col"
             >
               <div className="p-6 border-b border-white/5 flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -145,9 +145,9 @@ export function DashboardLayout({ children, currentPage, onNavigate }: Dashboard
       </AnimatePresence>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-h-screen overflow-hidden">
+      <div className="relative z-10 flex-1 flex flex-col min-h-screen overflow-hidden">
         {/* Header */}
-        <header className="bg-[#0d2520]/80 backdrop-blur-sm border-b border-white/5 px-4 lg:px-8 py-4">
+        <header className="sticky top-0 z-30 bg-[#0a211c]/65 backdrop-blur-2xl border-b border-white/10 px-4 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
