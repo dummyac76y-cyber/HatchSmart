@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Thermometer, Droplets, Calendar, Wifi, WifiOff, AlertTriangle, TrendingUp, Activity, Egg } from 'lucide-react';
+import { Thermometer, Droplets, Calendar, Wifi, WifiOff, AlertTriangle, TrendingUp, Activity, Egg, RotateCw, Clock3, CheckCircle2 } from 'lucide-react';
 import { useSensorData } from '../hooks/useSensorData';
 import { DashboardTrends } from './DashboardTrends';
 
@@ -53,6 +53,28 @@ function DeviceStatusCard({ isOnline, lastUpdate }: { isOnline: boolean; lastUpd
 
 export function OverviewPage() {
   const { currentData, incubationProgress, isOnline, lastUpdate, isDemo } = useSensorData();
+  const [turnLog, setTurnLog] = useState<{ date: string; count: number; lastAt: string | null }>(() => {
+    try {
+      const saved = localStorage.getItem('hatchsmart-egg-turn-log');
+      const parsed = saved ? JSON.parse(saved) : null;
+      const today = new Date().toLocaleDateString('en-CA');
+      return parsed?.date === today ? parsed : { date: today, count: 0, lastAt: null };
+    } catch {
+      return { date: new Date().toLocaleDateString('en-CA'), count: 0, lastAt: null };
+    }
+  });
+  useEffect(() => {
+    localStorage.setItem('hatchsmart-egg-turn-log', JSON.stringify(turnLog));
+  }, [turnLog]);
+  const logEggTurn = () => {
+    const today = new Date().toLocaleDateString('en-CA');
+    setTurnLog(previous => ({
+      date: today,
+      count: previous.date === today ? previous.count + 1 : 1,
+      lastAt: new Date().toISOString(),
+    }));
+  };
+  const resetTurnLog = () => setTurnLog({ date: new Date().toLocaleDateString('en-CA'), count: 0, lastAt: null });
   const activities = [
     { time: '2 min ago', event: 'Temperature reading received', type: 'info' },
     { time: '2 min ago', event: 'Humidity reading received', type: 'info' },
@@ -94,6 +116,27 @@ export function OverviewPage() {
         </div>
         <div className="mb-4 h-2.5 overflow-hidden rounded-full bg-black/20"><motion.div initial={{ width: 0 }} animate={{ width: `${incubationProgress.percentage}%` }} transition={{ duration: 0.8 }} className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-300" /></div>
         <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-3"><div><p className="text-slate-500">Start date</p><p className="mt-1 font-medium text-slate-200">{incubationProgress.startDate}</p></div><div className="sm:text-center"><p className="text-slate-500">Progress</p><p className="mt-1 font-medium text-emerald-200">{incubationProgress.percentage.toFixed(0)}% complete</p></div><div className="sm:text-right"><p className="text-slate-500">Estimated hatch</p><p className="mt-1 font-medium text-slate-200">{incubationProgress.estimatedHatch}</p></div></div>
+      </motion.section>
+
+      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.23 }}
+        className="relative overflow-hidden rounded-3xl border border-emerald-100/10 bg-gradient-to-br from-[#163c31]/85 via-[#123128]/85 to-[#102a35]/85 p-5 shadow-[0_18px_55px_rgba(0,0,0,.15)] backdrop-blur-xl sm:p-7">
+        <div aria-hidden="true" className="pointer-events-none absolute -right-12 -top-16 h-48 w-48 rounded-full bg-emerald-300/10 blur-3xl" />
+        <div className="relative flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-xl">
+            <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-200/15 bg-emerald-200/[.06] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[.14em] text-emerald-100"><RotateCw size={13} /> Research log</div>
+            <h3 className="text-lg font-semibold text-white">Egg-turning checkpoint</h3>
+            <p className="mt-1.5 text-sm leading-relaxed text-slate-300/70">Record each manual egg turn during your incubation trial. This is a local research note only—it does not activate a motor or confirm that the eggs physically turned.</p>
+            <div className="mt-4 flex items-center gap-2 text-xs text-slate-400"><Clock3 size={14} /> {turnLog.lastAt ? `Last logged ${new Date(turnLog.lastAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : 'No turns logged today yet'}</div>
+          </div>
+          <div className="relative flex items-center gap-4 rounded-2xl border border-white/10 bg-black/10 p-4 sm:p-5">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-emerald-200/10 text-emerald-100"><Egg size={27} /></div>
+            <div className="min-w-20"><p className="text-xs text-slate-400">Today's entries</p><p className="mt-1 text-3xl font-semibold text-white">{turnLog.count}</p><p className="mt-1 text-[10px] text-slate-500">Saved in this browser</p></div>
+            <div className="flex flex-col gap-2">
+              <button onClick={logEggTurn} className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-200 px-4 py-2.5 text-xs font-semibold text-emerald-950 shadow-lg shadow-emerald-950/20 hover:bg-emerald-100"><CheckCircle2 size={15} /> Log egg turn</button>
+              <button onClick={resetTurnLog} className="rounded-xl border border-white/10 px-4 py-2 text-xs font-medium text-slate-300 hover:bg-white/[.06]">Reset today's log</button>
+            </div>
+          </div>
+        </div>
       </motion.section>
 
       <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.25 }}
