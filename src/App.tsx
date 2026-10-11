@@ -4,6 +4,8 @@ import { LoginPage, RegisterPage, ForgotPasswordPage } from './components/AuthPa
 import { DashboardLayout } from './components/DashboardLayout';
 import { OverviewPage } from './components/OverviewPage';
 import { IncubatorPage } from './components/IncubatorPage';
+import { IncubatorsPage } from './components/IncubatorsPage';
+import { HatchJourneyPage } from './components/HatchJourneyPage';
 import { SensorHistoryPage } from './components/SensorHistoryPage';
 import { AlertsPage } from './components/AlertsPage';
 import { ReportsPage } from './components/ReportsPage';
@@ -33,6 +35,10 @@ function DashboardRouter() {
         return <OverviewPage />;
       case 'incubator':
         return <IncubatorPage />;
+      case 'incubators':
+        return <IncubatorsPage />;
+      case 'journey':
+        return <HatchJourneyPage />;
       case 'history':
         return <SensorHistoryPage />;
       case 'alerts':
