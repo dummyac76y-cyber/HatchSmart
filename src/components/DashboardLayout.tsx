@@ -34,6 +34,37 @@ export function DashboardLayout({ children, currentPage, onNavigate }: Dashboard
     return () => clearInterval(timer);
   }, []);
 
+  // Reveal dashboard cards as they enter the scroll viewport, including on mobile.
+  React.useEffect(() => {
+    const root = document.querySelector('main');
+    if (!root) return;
+    const selector = '.glass-surface, article, .recharts-wrapper, [class*="rounded-2xl"][class*="border"]';
+    const candidates = Array.from(root.querySelectorAll<HTMLElement>(selector));
+    const targets = candidates.filter((element) =>
+      !candidates.some((other) => other !== element && other.contains(element))
+    );
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach((element) => element.classList.add('scroll-reveal-visible'));
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const element = entry.target as HTMLElement;
+        if (entry.isIntersecting) {
+          element.classList.add('scroll-reveal-visible');
+        } else {
+          element.classList.remove('scroll-reveal-visible');
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -4% 0px' });
+    targets.forEach((element, index) => {
+      element.classList.add('scroll-reveal');
+      element.style.setProperty('--reveal-delay', `${Math.min(index % 4, 3) * 75}ms`);
+      observer.observe(element);
+    });
+    return () => observer.disconnect();
+  }, [currentPage]);
+
   const userName = user?.displayName || 'User';
   const userEmail = user?.email || '';
 
