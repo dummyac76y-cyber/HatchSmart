@@ -87,7 +87,7 @@ input[type="checkbox"] { accent-color: #34d399; }
 @keyframes hatch-sheen { 0% { background-position: -180% 0; } 100% { background-position: 180% 0; } }
 .glass-surface { position: relative; overflow: hidden; transition: border-color .28s ease, box-shadow .28s ease, transform .28s ease; }
 .glass-surface:hover { border-color: rgba(110,231,183,.24); box-shadow: 0 22px 70px rgba(0,0,0,.22), 0 0 24px rgba(52,211,153,.045); }
-main section, main article { animation: hatch-card-enter .55s cubic-bezier(.2,.75,.25,1) both; }
+/* Framer Motion owns page/card transforms; avoid competing CSS animations. */
 @keyframes hatch-card-enter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 button:not(:disabled):hover { box-shadow: 0 7px 22px rgba(16,185,129,.08); }
 input, select, textarea { transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease; }
@@ -96,6 +96,23 @@ input:focus, select:focus, textarea:focus { border-color: rgba(110,231,183,.55);
   .hatch-float { animation: hatch-float 5s ease-in-out infinite; }
   .hatch-glow { animation: hatch-glow 4s ease-in-out infinite; }
 }
+
+
+/* Clear, visible entrance motion for cards and data visualizations. */
+@keyframes hatch-reveal {
+  0% { opacity: 0; transform: translate3d(0, 22px, 0) scale(.985); filter: blur(5px); }
+  70% { filter: blur(0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0); }
+}
+@keyframes hatch-chart-reveal {
+  from { opacity: .12; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.page-reveal { animation: hatch-reveal .72s cubic-bezier(.2,.75,.25,1) both; }
+.chart-reveal { animation: hatch-chart-reveal .9s ease-out both; }
+.recharts-wrapper { animation: hatch-chart-reveal .85s ease-out both; }
+.recharts-area-area, .recharts-line-curve { transition: opacity .35s ease, stroke-width .35s ease; }
+.recharts-wrapper .recharts-surface { overflow: visible; }
 @media (prefers-reduced-motion: reduce) {
-  main section, main article { animation: none; }
+  .page-reveal, .chart-reveal, .recharts-wrapper { animation: none !important; }
 }
