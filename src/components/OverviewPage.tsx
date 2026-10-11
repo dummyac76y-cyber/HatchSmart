@@ -144,6 +144,42 @@ export function OverviewPage() {
         <div className="mb-4 flex items-center justify-between"><div><h3 className="font-semibold text-white">Recent activity</h3><p className="mt-1 text-xs text-slate-400">Latest device and environment events</p></div><span className="rounded-full border border-white/[0.08] bg-white/[0.03] px-2.5 py-1 text-[11px] text-slate-400">Last 3 hours</span></div>
         <div className="divide-y divide-white/[0.06]">{activities.map((item) => <div key={item.event} className="flex items-center gap-3 py-3.5"><span className={`h-2 w-2 shrink-0 rounded-full ${item.type === 'success' ? 'bg-emerald-300' : item.type === 'warning' ? 'bg-amber-300' : 'bg-sky-300'}`} /><span className="min-w-0 flex-1 text-sm text-slate-300">{item.event}</span><span className="shrink-0 text-xs text-slate-500">{item.time}</span></div>)}</div>
       </motion.section>
+
+      <motion.section initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.28 }}
+        className="relative overflow-hidden rounded-3xl border border-cyan-200/10 bg-gradient-to-br from-[#12372f]/90 via-[#102b31]/90 to-[#10243a]/90 p-5 shadow-[0_18px_55px_rgba(0,0,0,.18)] backdrop-blur-xl sm:p-7">
+        <div aria-hidden="true" className="pointer-events-none absolute -right-12 -top-16 h-56 w-56 rounded-full bg-cyan-300/10 blur-3xl animate-pulse" />
+        <div className="relative mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-cyan-200/15 bg-cyan-200/[.06] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[.14em] text-cyan-100"><Egg size={13} /> Hatch journey</div>
+            <h3 className="text-lg font-semibold text-white">Every day brings new life closer.</h3>
+            <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-slate-300/70">A quick visual guide to the main stages of a typical chicken egg incubation cycle.</p>
+          </div>
+          <span className="w-fit rounded-full border border-white/10 bg-black/10 px-3 py-1.5 text-xs text-slate-300">Day {incubationProgress.currentDay} / {incubationProgress.totalDays}</span>
+        </div>
+        <div className="relative grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {[
+            { days: 'Days 1–7', title: 'Early development', detail: 'Embryo development begins; keep conditions steady.', icon: '🌱', active: incubationProgress.currentDay <= 7 },
+            { days: 'Days 8–18', title: 'Growth & formation', detail: 'The embryo grows as organs and features develop.', icon: '🥚', active: incubationProgress.currentDay > 7 && incubationProgress.currentDay <= 18 },
+            { days: 'Days 19–21', title: 'Hatching window', detail: 'Prepare for hatch; avoid unnecessary egg handling.', icon: '🐣', active: incubationProgress.currentDay > 18 },
+          ].map((stage, index) => (
+            <motion.div key={stage.title} whileHover={{ y: -4, scale: 1.01 }} transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+              className={`group relative overflow-hidden rounded-2xl border p-4 transition-colors duration-300 ${stage.active ? 'border-emerald-200/30 bg-emerald-200/[.08] shadow-[0_0_28px_rgba(52,211,153,.07)]' : 'border-white/[.08] bg-white/[.025] hover:border-cyan-200/20 hover:bg-white/[.05]'}`}>
+              <div className="mb-4 flex items-center justify-between">
+                <span className="text-2xl transition-transform duration-300 group-hover:scale-110">{stage.icon}</span>
+                <span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${stage.active ? 'bg-emerald-200/10 text-emerald-100' : 'bg-white/[.05] text-slate-500'}`}>{stage.active ? 'Current stage' : stage.days}</span>
+              </div>
+              <p className="text-[11px] font-semibold uppercase tracking-[.12em] text-cyan-100/60">{stage.days}</p>
+              <h4 className="mt-1.5 text-sm font-semibold text-white">{stage.title}</h4>
+              <p className="mt-2 text-xs leading-relaxed text-slate-400">{stage.detail}</p>
+              <div className="mt-4 h-1 overflow-hidden rounded-full bg-black/20">
+                <motion.div initial={{ width: 0 }} animate={{ width: stage.active ? '100%' : `${Math.max(12, Math.min(100, incubationProgress.percentage * (index + 1) / 3))}%` }} transition={{ duration: 0.9, delay: 0.35 + index * 0.1 }}
+                  className={`h-full rounded-full ${stage.active ? 'bg-gradient-to-r from-emerald-300 to-cyan-300' : 'bg-white/15'}`} />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        <p className="relative mt-4 text-[11px] leading-relaxed text-slate-500">General reference for chicken eggs; follow your research protocol and the requirements of your specific species. Stage highlights are informational, not a prediction of hatch success.</p>
+      </motion.section>
     </div>
   );
 }
