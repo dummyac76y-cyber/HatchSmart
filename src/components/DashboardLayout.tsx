@@ -83,7 +83,8 @@ export function DashboardLayout({ children, currentPage, onNavigate }: Dashboard
             </div>
           </div>
         </div>
-        <div className="px-6 pt-6 pb-2 text-[10px] font-bold uppercase tracking-[.22em] text-emerald-100/40">Incubator workspace</div>\n        <nav className="flex-1 px-3 py-2 space-y-1">
+        <div className="px-6 pt-6 pb-2 text-[10px] font-bold uppercase tracking-[.22em] text-emerald-100/40">Incubator workspace</div>
+        <nav className="flex-1 px-3 py-2 space-y-1">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentPage === item.id;
@@ -103,7 +104,11 @@ export function DashboardLayout({ children, currentPage, onNavigate }: Dashboard
             );
           })}
         </nav>
-        <div className="mx-3 mb-3 rounded-2xl border border-emerald-200/10 bg-gradient-to-br from-emerald-300/[.09] to-cyan-400/[.025] p-3">\n          <div className="flex items-center gap-2 text-xs font-semibold text-emerald-100"><span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_12px_rgba(110,231,183,.85)]" /> Monitoring workspace</div>\n          <p className="mt-1.5 pl-4 text-[10px] leading-relaxed text-slate-500">Sensor trends, hatch conditions and research logs</p>\n        </div>\n        <div className="p-3 border-t border-white/[.08]">
+        <div className="mx-3 mb-3 rounded-2xl border border-emerald-200/10 bg-gradient-to-br from-emerald-300/[.09] to-cyan-400/[.025] p-3">
+          <div className="flex items-center gap-2 text-xs font-semibold text-emerald-100"><span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_12px_rgba(110,231,183,.85)]" /> Monitoring workspace</div>
+          <p className="mt-1.5 pl-4 text-[10px] leading-relaxed text-slate-500">Sensor trends, hatch conditions and research logs</p>
+        </div>
+        <div className="p-3 border-t border-white/[.08]">
           <button
             onClick={logout}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-400 hover:text-red-400 hover:bg-red-500/5 transition-all duration-200"
