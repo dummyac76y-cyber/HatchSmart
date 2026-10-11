@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Thermometer, History, Bell, FileText, Settings,
-  User, LogOut, Menu, X, Egg, ChevronDown, Wifi, WifiOff, Clock
+  User, LogOut, Menu, X, Egg, ChevronDown, Wifi, WifiOff, Clock, Sprout, Layers3
 } from 'lucide-react';
 import { useAuth } from '../AuthContext';
 
@@ -14,7 +14,9 @@ interface DashboardLayoutProps {
 
 const navItems = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-  { id: 'incubator', label: 'Incubator', icon: Thermometer },
+  { id: 'incubators', label: 'Incubators', icon: Layers3 },
+  { id: 'incubator', label: 'Sensor Monitor', icon: Thermometer },
+  { id: 'journey', label: 'Hatch Journey', icon: Sprout },
   { id: 'history', label: 'Sensor History', icon: History },
   { id: 'alerts', label: 'Alerts', icon: Bell },
   { id: 'reports', label: 'Reports', icon: FileText },
