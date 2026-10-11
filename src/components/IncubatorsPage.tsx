@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Activity, CalendarDays, Check, CirclePlus, Egg, Pencil, Thermometer, Trash2, Wifi, WifiOff, X } from 'lucide-react';
+import { Activity, CalendarDays, Check, PlusCircle, Egg, Pencil, Thermometer, Trash2, Wifi, WifiOff, X } from 'lucide-react';
 
 type Incubator = {
   id: string;
@@ -94,7 +94,7 @@ export function IncubatorsPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">All incubators</h1>
           <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-slate-400">Manage separate batches, device IDs, species, egg counts, and start dates in one place.</p>
         </div>
-        <motion.button whileHover={{ y: -2, scale: 1.02 }} whileTap={{ scale: .97 }} onClick={openNew} className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-200 px-4 py-3 text-sm font-semibold text-emerald-950"><CirclePlus size={17} /> Add incubator</motion.button>
+        <motion.button whileHover={{ y: -2, scale: 1.02 }} whileTap={{ scale: .97 }} onClick={openNew} className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-200 px-4 py-3 text-sm font-semibold text-emerald-950"><PlusCircle size={17} /> Add incubator</motion.button>
       </motion.header>
 
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .5, delay: .08 }} className="grid grid-cols-1 gap-3 sm:grid-cols-3">
